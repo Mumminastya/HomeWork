@@ -48,9 +48,9 @@ def task_4():
     while True:
         operation = input("Выберите операцию (Add-1/Move-2/Stop=3): ")
         if not (operation.isnumeric()):
-            print("Only 1/2 available")
+            print("Only 1/2/3 available")
             continue
-        match operation:
+        match int(operation):
             case 1:
                 tech_type = input("Выберите тип техники (Printer-P/Fax-F): ")
                 match tech_type:
@@ -59,7 +59,7 @@ def task_4():
                         storage.add_tech(p)
                     case "F":
                         f = Fax()
-                        storage.add_tech(p)
+                        storage.add_tech(f)
                     case _:
                         print("Tech type not found")
                         continue
@@ -76,7 +76,7 @@ def task_4():
             case 3:
                 break
             case _:
-                print("Only 1/2 available")
+                print("Only 1/2/3 available")
                 continue
 
     print(buh_storage.main_storage)
