@@ -2,9 +2,10 @@ from abc import ABC
 
 
 class OfficeTech(ABC):
-    serial_number: str
-    place: str
-    title: str
+    def __init__(self, serial_number: str, place: str, title: str):
+        self.serial_number = serial_number
+        self.place = place
+        self.title = title
 
 
 class Storage:
@@ -17,8 +18,10 @@ class Storage:
 
     @classmethod
     def move(cls, st1, st2, tech_type, count):
+        if not (count.isnumeric()):
+            raise Exception("Количество должно быть числом")
+
         tech_type_name = tech_type.__name__
-        print(tech_type_name)
         if not (tech_type_name in st1.main_storage):
             raise Exception("Не достаточно техники")
 
@@ -40,21 +43,41 @@ class Fax(OfficeTech):
 
 
 def task_4():
-    pr1 = Printer()
-    pr1.title = "Пр1"
-
-    pr2 = Printer()
-    pr1.title = "Пр2"
-
-    f1 = Fax()
-    f1.title = "Ф1"
-
     storage = Storage()
-    storage.add_tech(pr1)
-    storage.add_tech(pr2)
-    storage.add_tech(f1)
-
     buh_storage = Storage()
-    Storage.move(storage, buh_storage, Fax, 1)
+    while True:
+        operation = input("Выберите операцию (Add-1/Move-2/Stop=3): ")
+        if not (operation.isnumeric()):
+            print("Only 1/2 available")
+            continue
+        match operation:
+            case 1:
+                tech_type = input("Выберите тип техники (Printer-P/Fax-F): ")
+                match tech_type:
+                    case "P":
+                        p = Printer()
+                        storage.add_tech(p)
+                    case "F":
+                        f = Fax()
+                        storage.add_tech(p)
+                    case _:
+                        print("Tech type not found")
+                        continue
+            case 2:
+                tech_type = input("Выберите тип техники (Printer-P/Fax-F): ")
+                match tech_type:
+                    case "P":
+                        Storage.move(storage, buh_storage, Printer, 1)
+                    case "F":
+                        Storage.move(storage, buh_storage, Fax, 1)
+                    case _:
+                        print("Tech type not found")
+                        continue
+            case 3:
+                break
+            case _:
+                print("Only 1/2 available")
+                continue
+
     print(buh_storage.main_storage)
     print(storage.main_storage)
